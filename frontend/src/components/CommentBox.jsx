@@ -28,7 +28,7 @@ const CommentBox = ({ selectedBlog }) => {
         const fetchComments = async () => {
             try {
                 const res = await axios.get(
-                    `http://localhost:8000/api/v1/comment/${selectedBlog._id}/comment/all`
+                    `https://blog-app-9g6i.onrender.com/api/v1/comment/${selectedBlog._id}/comment/all`
                 );
                 setComments(res.data.comments || []);
             } catch (error) {
@@ -67,7 +67,7 @@ const CommentBox = ({ selectedBlog }) => {
 
         try {
             const res = await axios.post(
-                `http://localhost:8000/api/v1/comment/${selectedBlog._id}/create`,
+                `https://blog-app-9g6i.onrender.com/api/v1/comment/${selectedBlog._id}/create`,
                 { content },
                 { headers: { "Content-Type": "application/json" }, withCredentials: true }
             );
@@ -90,7 +90,7 @@ const CommentBox = ({ selectedBlog }) => {
     // Delete comment 
     const deleteComment = async (commentId) => {
         try {
-            const res = await axios.delete(`http://localhost:8000/api/v1/comment/${commentId}/delete`,{
+            const res = await axios.delete(`https://blog-app-9g6i.onrender.com/api/v1/comment/${commentId}/delete`,{
                 withCredentials:true
             })
             if(res.data.success){
@@ -105,7 +105,7 @@ const CommentBox = ({ selectedBlog }) => {
 
     const editCommentHandler = async(commentId)=>{
         try {
-          const res = await axios.put(`http://localhost:8000/api/v1/comment/${commentId}/edit`, {content:editedContent},{
+          const res = await axios.put(`https://blog-app-9g6i.onrender.com/api/v1/comment/${commentId}/edit`, {content:editedContent},{
             withCredentials:true,
             headers:{
                 "Content-Type":"application/json"
@@ -128,7 +128,7 @@ const CommentBox = ({ selectedBlog }) => {
 
     const likeCommentHandler = async (commentId) => {
         try {
-            const res = await axios.get(`http://localhost:8000/api/v1/comment/${commentId}/like`,{
+            const res = await axios.get(`https://blog-app-9g6i.onrender.com/api/v1/comment/${commentId}/like`,{
                 withCredentials:true
             });
             if(res.data.success){

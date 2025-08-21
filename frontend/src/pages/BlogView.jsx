@@ -72,7 +72,7 @@ const BlogView = () => {
     try {
       const action = liked ? "dislike" : "like";
       const res = await axios.get(
-        `http://localhost:8000/api/v1/blog/${selectedBlog._id}/${action}`,
+        `https://blog-app-9g6i.onrender.com/api/v1/blog/${selectedBlog._id}/${action}`,
         { withCredentials: true }
       );
 

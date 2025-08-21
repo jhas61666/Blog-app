@@ -6,7 +6,7 @@ const PopularAuthors = () => {
     const [popularUser, setPopularUser] = useState([]);
     const getAllUsers = async () => {
         try {
-            const res = await axios.get(`http://localhost:8000/api/v1/user/all-users`)
+            const res = await axios.get(`https://blog-app-9g6i.onrender.com/api/v1/user/all-users`)
             if(res.data.success){
                 setPopularUser(res.data.users)
             }
