@@ -1,6 +1,8 @@
 import { User } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import getDataUri from "../utils/dataUri.js";
+import cloudinary from "../utils/cloudinary.js";
 
 export const register = async (req, res) => {
     try {
@@ -99,5 +101,67 @@ export const logout = async (__dirname, res) => {
         })
     } catch (error) {
         console.log(error);
+    }
+}
+
+export const updateProfile = async(req, res) => {
+    try {
+        const userId = req.id
+        const {firstName, lastName, occupation, description, bio, instagram, facebook, linkedin, github} = req.body;
+        const file = req.file;
+        const fileUri = getDataUri(file);
+        let cloudResponse = await cloudinary.uploader.upload(fileUri)
+        
+
+        const user = await User.findById(userId).select("-password")
+        if(!user) {
+            return res.status(404).json({
+                message:"User not found",
+                success:false
+            })
+        }
+        // updating data
+        if(firstName) user.firstName = firstName
+        if(lastName) user.lastName = lastName
+        if(occupation) user.occupation = occupation
+        if(description) user.description = description
+        if(instagram) user.instagram = instagram
+        if(facebook) user.facebook = facebook
+        if(linkedin) user.linkedin = linkedin
+        if(github) user.github = github
+        if(bio) user.bio = bio
+        if(file) user.photoUrl = cloudResponse.secure_url
+
+        await user.save()
+        return res.status(200).json({
+            message:"Profile updated successfully.",
+            success:true,
+            user
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success:false,
+            message:"Failed to update profile."
+        })
+    }
+}
+
+export const getAllUsers = async (req, res) =>{
+    try {
+        const users = await User.find().select("-password");  // exclude password field
+        res.status(200).json({
+            success:true,
+            message:"User list fetched successfully",
+            total:users.length,
+            users
+        })
+    } catch (error) {
+        console.error("Error fetching user List:", error);
+        res.status(500).json({
+            success:false,
+            message:"Failed to fetch users"
+        })
+        
     }
 }
